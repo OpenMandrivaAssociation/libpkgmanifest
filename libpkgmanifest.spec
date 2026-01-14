@@ -12,11 +12,14 @@ Summary:	Library for parsing and serializing RPM package manifest files
 URL:		https://github.com/rpm-software-management/libpkgmanifest
 License:	LGPL-2.1
 Group:		System/Libraries
-BuildRequires:	cmake
 BuildSystem:	cmake
-BuildRequires:	pkgconfig(yaml-cpp)
+%if %{cross_compiling}
+BuildOption:	-DWITH_TESTS:BOOL=OFF
+%else
 BuildRequires:	pkgconfig(gtest)
 BuildRequires:	pkgconfig(gmock)
+%endif
+BuildRequires:	pkgconfig(yaml-cpp)
 BuildRequires:	pkgconfig(python)
 BuildRequires:	swig
 
