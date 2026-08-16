@@ -6,7 +6,7 @@
 
 Name:		libpkgmanifest
 Version:	0.5.9
-Release:	1
+Release:	2
 Source0:	https://github.com/rpm-software-management/libpkgmanifest/archive/refs/tags/v%{version}.tar.gz
 Summary:	Library for parsing and serializing RPM package manifest files
 URL:		https://github.com/rpm-software-management/libpkgmanifest
