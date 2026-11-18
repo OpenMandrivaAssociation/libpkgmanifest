@@ -5,21 +5,23 @@
 %global optflags %{optflags} -Wno-error=unused-private-field
 
 Name:		libpkgmanifest
-Version:	0.5.9
-Release:	3
+Version:	0.6.2
+Release:	1
 Source0:	https://github.com/rpm-software-management/libpkgmanifest/archive/refs/tags/v%{version}.tar.gz
 Summary:	Library for parsing and serializing RPM package manifest files
 URL:		https://github.com/rpm-software-management/libpkgmanifest
-License:	LGPL-2.1
+License:	LGPL-2.1-or-later
 Group:		System/Libraries
 BuildSystem:	cmake
+BuildOption:	-DWITH_DOCS:BOOL=OFF
 %if %{cross_compiling}
 BuildOption:	-DWITH_TESTS:BOOL=OFF
 %else
 BuildRequires:	pkgconfig(gtest)
 BuildRequires:	pkgconfig(gmock)
 %endif
-BuildRequires:	pkgconfig(yaml-cpp)
+BuildRequires:	pkgconfig(rpm)
+BuildRequires:	pkgconfig(yaml-cpp) >= 0.7.0
 BuildRequires:	pkgconfig(python)
 BuildRequires:	swig
 
@@ -93,11 +95,16 @@ Requires:	%{libname} = %{EVRD}
 %description -n python-%{name}
 Python bindings for the RPM package manifest library
 
+%if !%{cross_compiling}
+%check
+LD_LIBRARY_PATH="%{buildroot}%{_libdir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" ctest --test-dir _OMV_rpm_build --output-on-failure
+%endif
+
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
 
 %files -n %{devname}
-%{_includedir}/*
+%{_includedir}/libpkgmanifest/
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
 
